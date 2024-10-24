@@ -16,8 +16,11 @@ interface ChatCompletionParams {
     temperature?: number;
 }
 
+//My Changes
+
 
 async function getChatCompletion(params: ChatCompletionParams): Promise<ChatResponse> {
+  //My Changes
   const model = (params.model) ? params.model : '';
   const chatQuery = (params.chatQuery) ? params.chatQuery : defaultChatQuery;
   const maxTokens = (params.maxTokens) ? Number(params.maxTokens) : 20;
@@ -27,6 +30,7 @@ async function getChatCompletion(params: ChatCompletionParams): Promise<ChatResp
 }
 
 app.get('/', async (c) => {
+  //My Changes
   let queries = c.req.queries() || {}
   const params: ChatCompletionParams = {
     model: queries.model?.[0],
@@ -39,6 +43,7 @@ app.get('/', async (c) => {
 })
 
 app.post('/', async (c) => {
+  //My Changes
   const data = await c.req.json()
   const response = await getChatCompletion(data);
   return c.json(response)

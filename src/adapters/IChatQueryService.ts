@@ -9,5 +9,5 @@ export interface ChatResponse {
 
 export default interface IChatQueryService {
 
-    executeChatQuery(chatQuery: string, model: string): Promise<ChatResponse> ;
+    executeChatQuery(chatQuery: string, model: string, max_tokens: number, temperature: number, systemPrompt?: string): Promise<ChatResponse> ;
 }
