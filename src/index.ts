@@ -2,10 +2,8 @@ import '@phala/wapo-env'
 import { Hono } from 'hono/tiny'
 import { handle } from '@phala/wapo-env/guest'
 import ClaudeAIService from "./services/ClaudeAIService";
-import {ChatResponse} from "./adapters/IChatQueryService";
-
+import IChatQueryService, {ChatResponse} from "./adapters/IChatQueryService";
 export const app = new Hono()
-
 const defaultChatQuery = 'Phala Network is the future..?';
 const defaultModel = 'claude-3-5-sonnet-20241022';
 
@@ -17,15 +15,13 @@ interface ChatCompletionParams {
 }
 
 //My Changes
-
-
 async function getChatCompletion(params: ChatCompletionParams): Promise<ChatResponse> {
   //My Changes
   const model = (params.model) ? params.model : '';
   const chatQuery = (params.chatQuery) ? params.chatQuery : defaultChatQuery;
   const maxTokens = (params.maxTokens) ? Number(params.maxTokens) : 20;
   const temperature = (params.temperature) ? Number(params.temperature) : 0.7;
-  const claudeAIService = new ClaudeAIService();
+  const claudeAIService:IChatQueryService = new ClaudeAIService();
   return claudeAIService.executeChatQuery(chatQuery, model, maxTokens, temperature);
 }
 
