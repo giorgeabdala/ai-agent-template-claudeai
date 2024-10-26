@@ -1,5 +1,10 @@
-import {describe, test, expect} from "vitest";
+import {describe, test, expect, vi} from "vitest";
 import ClaudeAIService from "../../src/services/ClaudeAIService";
+import * as path from "node:path";
+
+// Set Testing env secrets
+const secretsFile = '../../secrets/default.json'
+vi.stubEnv('secret', JSON.stringify(require(path.join(__dirname, secretsFile))))
 
 
 describe ('Test ClaudeAI Service', () => {

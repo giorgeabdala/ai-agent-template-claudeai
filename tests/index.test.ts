@@ -1,16 +1,15 @@
 import {afterAll, describe, test, vi, expect, beforeAll} from 'vitest'
 import { app } from '../src/'
+import * as path from "node:path";
 
 beforeAll(() => {
   this.chatQuery = 'Who are you two?';
   this.model = 'claude-3-5-sonnet-20241022';
 } ) ;
 
-
-
 // Set Testing env secrets
-const apiKey = JSON.stringify({apiKey: 'sk-qVBlJkO3e99t81623PsB0zHookSQJxU360gDMooLenN01gv2'})
-vi.stubEnv('secret', apiKey)
+const secretsFile = '../secrets/default.json'
+vi.stubEnv('secret', JSON.stringify(require(path.join(__dirname, secretsFile))))
 
 describe('Test RedPill AI Agent Contract', () => {
   test('GET Test: Pass chatQuery through URL Query', async () => {
