@@ -11,6 +11,7 @@
     "test": "vitest --testTimeout=60000",
     "ci": "npm run build && vitest --coverage --run",
     "publish-agent": "npm run build && tsx scripts/publish.ts",
+    "deploy": "npm run publish-agent && npm run set-secrets",
     "set-secrets": "tsx scripts/setSecrets.ts"
   },
   "watch": {

@@ -24,7 +24,7 @@ describe ('Test ClaudeAI Service', () => {
         expect(response).to.not.be.empty;
         expect(response.message.length).to.be.greaterThan(10);
         expect(response.message.length).to.be.lessThan(200);
-        expect(response.message.toLowerCase()).to.include('blockchain' || 'phala' || 'network');
+        expect(response.message.toLowerCase()).to.include( 'phala');
 
     } ) ;
 } ) ;

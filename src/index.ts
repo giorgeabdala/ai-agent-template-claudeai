@@ -19,13 +19,19 @@ interface ChatCompletionParams {
 //My Changes
 async function getChatCompletion(params: ChatCompletionParams): Promise<ChatResponse> {
   //My Changes
-  const model = (params.model) ? params.model : defaultModel;
-  const chatQuery = (params.chatQuery) ? params.chatQuery : defaultChatQuery;
-  const maxTokens = (params.maxTokens) ? Number(params.maxTokens) : defaultMaxTokens;
-  const temperature = (params.temperature) ? Number(params.temperature) : defaultTemperature;
-  const claudeAIService:IChatQueryService = new ClaudeAIService();
-  return claudeAIService.executeChatQuery(chatQuery, model, maxTokens, temperature);
-}
+  try {
+    const model = (params.model) ? params.model : defaultModel;
+    const chatQuery = (params.chatQuery) ? params.chatQuery : defaultChatQuery;
+    const maxTokens = (params.maxTokens) ? Number(params.maxTokens) : defaultMaxTokens;
+    const temperature = (params.temperature) ? Number(params.temperature) : defaultTemperature;
+    const claudeAIService:IChatQueryService = new ClaudeAIService();
+    return claudeAIService.executeChatQuery(chatQuery, model, maxTokens, temperature);
+  } catch (error) {
+    console.error('Chat query execution failed:', error);
+    console.error('Params:', params);
+    }
+  }
+
 
 app.get('/', async (c) => {
   //My Changes
@@ -37,7 +43,8 @@ app.get('/', async (c) => {
     temperature: queries.temperature ? Number(queries.temperature[0]) : defaultTemperature
   };
   const response = await getChatCompletion(params);
-  return c.json(response)
+  console.log('Response:', response);
+  return c.json(response);
 })
 
 app.post('/', async (c) => {
