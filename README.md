@@ -1,6 +1,6 @@
 <div align="center">
-  <a href="https://github.com/Phala-Network/ai-agent-template-redpill">
-    <h1>AI Agent Contract Template with RedPill</h1>
+  <a href="https://github.com/Phala-Network/ai-agent-template-claudeai">
+    <h1>AI Agent Contract Template with Claude AI</h1>
     <img height="320" src="./public/AI-Agent-Contract.jpg" />
     <br />
   </a>
@@ -8,12 +8,12 @@
   <p align="center">
     Host your AI Agent Contract on Phala's decentralized serverless cloud.
     <br />
-    <a href="https://github.com/Phala-Network/ai-agent-template-redpill"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Phala-Network/ai-agent-template-claudeai"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://wapo-testnet.phala.network/ipfs/Qmc7EDq1X8rfYGGfHyXZ6xsmcSUWQcqsDoeRMfmvFujih3?key=51f265212c26086c&chatQuery=When%20did%20humans%20land%20on%20the%20moon">View Demo</a>
     ·
-    <a href="https://github.com/Phala-Network/ai-agent-template-redpill/issues">Report Bug</a>
+    <a href="https://github.com/Phala-Network/ai-agent-template-claudeai/issues">Report Bug</a>
     ·
     <a href="https://discord.gg/phala-network">Discord</a>
   </p>
@@ -28,7 +28,7 @@
   <img height="240" src="https://www.jlwranglerforums.com/forum/attachments/zoolander-gif.325299/">
 </div>
 
-The RedPill AI Agent template is a **MINIMAL** template to build an AI Agent that can be hosted on Phala Network's decentralized hosting protocol. Unlike Vercel or other FaaS, it allows you to publish your AI Agent compiled code to IPFS and hosts it on a fully decentralized FaaS cloud with the following benefits:
+The Claude AI Agent template is a **MINIMAL** template to build an AI Agent that can be hosted on Phala Network's decentralized hosting protocol. Unlike Vercel or other FaaS, it allows you to publish your AI Agent compiled code to IPFS and hosts it on a fully decentralized FaaS cloud with the following benefits:
 
 - 💨 Ship Fast: Build and ship with familiar toolchain in minutes
 - ⛑️ Secure: Execution guarded by rock solid TEE / Intel SGX
@@ -55,18 +55,15 @@ Create `.env` file with the default ThirdWeb API key for publishing your Agent C
 ```shell
 cp .env.example .env
 ```
-Get an API Key from Redpill
+Get an API Key from ClaudeAI/Anthropic
 > **Note**
-> 
-> There is a default RedPill API Key provided in the .env.example file. This API key is rate limited and if you run into an error that displays `Insufficient funds`, reach out to the Phala Team on [discord](https://discord.gg/phala-network).
+>
+- Go to https://console.anthropic.com/settings/keys and get your API Key.
 
-- Go to https://red-pill.ai/dashboard and claim your API Key by swapping some ETH for wGPT at https://app.uniswap.org/explore/tokens/base/0x74F62Bc1961028C22b8080961c6534f4eDD49D6C
-- Video Tutorial: https://youtu.be/ZoJwbLNhbWE
-
-In [default.json](./secrets/default.json) file replace `YOUR_API_KEY` with your API Key. The default has a rate limit. If you want access to a RedPill code, reach out to the Phala Team.
+In [default.json](./secrets/default.json) file replace `ANTHROPIC_API_KEY` with your API Key. 
 ```text
 {
-  "apiKey": "YOUR_REDPILL_API_KEY"
+  "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY"
 }
 ```
 
@@ -88,7 +85,7 @@ Now you are ready to publish your agent, add secrets, and interact with your age
 - Go to the url produced by setting the secrets (e.g. https://wapo-testnet.phala.network/ipfs/QmPQJD5zv3cYDRM25uGAVjLvXGNyQf9Vonz7rqkQB52Jae?key=b092532592cbd0cf)
 
  ✓ tests/index.test.ts (2) 6157ms
-   ✓ Test RedPill AI Agent Contract (2) 6156ms
+   ✓ Test ClaudeAI AI Agent Contract (2) 6156ms
      ✓ GET Test: Pass chatQuery through URL Query 2722ms
      ✓ POST Test: Pass chatQuery and model through body of POST request 3434ms
 
@@ -168,7 +165,7 @@ To add your secrets,
 1) Edit the [default.json](./secrets/default.json) file or create a new JSON file in the `./secrets` folder and add your secrets to it.
 ```json
 {
-  "apiKey": "YOUR_REDPILL_API_KEY"
+  "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY"
 }
 ```
 2) Run command to set the secrets
@@ -207,7 +204,7 @@ curl https://wapo-testnet.phala.network/vaults/<key>/<token>
 
 Expected output:
 ```shell
-{"data":{"apiKey":"<REDPILL_API_KEY>"},"succeed":true}
+{"data":{"ANTHROPIC_API_KEY":"<ANTHROPIC_API_KEY>"},"succeed":true}
 ```
 
 #### Accessing Secrets in Your Code

@@ -6,6 +6,8 @@ import IChatQueryService, {ChatResponse} from "./adapters/IChatQueryService";
 export const app = new Hono()
 const defaultChatQuery = 'Phala Network is the future..?';
 const defaultModel = 'claude-3-5-sonnet-20241022';
+const defaultMaxTokens = 20;
+const defaultTemperature = 0.7;
 
 interface ChatCompletionParams {
     chatQuery?: string;
@@ -17,10 +19,10 @@ interface ChatCompletionParams {
 //My Changes
 async function getChatCompletion(params: ChatCompletionParams): Promise<ChatResponse> {
   //My Changes
-  const model = (params.model) ? params.model : '';
+  const model = (params.model) ? params.model : defaultModel;
   const chatQuery = (params.chatQuery) ? params.chatQuery : defaultChatQuery;
-  const maxTokens = (params.maxTokens) ? Number(params.maxTokens) : 20;
-  const temperature = (params.temperature) ? Number(params.temperature) : 0.7;
+  const maxTokens = (params.maxTokens) ? Number(params.maxTokens) : defaultMaxTokens;
+  const temperature = (params.temperature) ? Number(params.temperature) : defaultTemperature;
   const claudeAIService:IChatQueryService = new ClaudeAIService();
   return claudeAIService.executeChatQuery(chatQuery, model, maxTokens, temperature);
 }
@@ -29,10 +31,10 @@ app.get('/', async (c) => {
   //My Changes
   let queries = c.req.queries() || {}
   const params: ChatCompletionParams = {
-    model: queries.model?.[0],
-    chatQuery: queries.chatQuery?.[0],
-    maxTokens: queries.maxTokens ? Number(queries.maxTokens[0]) : undefined,
-    temperature: queries.temperature ? Number(queries.temperature[0]) : undefined
+    model: queries.model?.[0] ? queries.model[0] : defaultModel,
+    chatQuery: queries.chatQuery?.[0] ? queries.chatQuery[0] : defaultChatQuery,
+    maxTokens: queries.maxTokens ? Number(queries.maxTokens[0]) : defaultMaxTokens,
+    temperature: queries.temperature ? Number(queries.temperature[0]) : defaultTemperature
   };
   const response = await getChatCompletion(params);
   return c.json(response)
