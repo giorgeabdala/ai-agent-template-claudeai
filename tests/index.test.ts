@@ -19,11 +19,20 @@ describe('Test RedPill AI Agent Contract', () => {
     expect(resp.status).toBe(200)
     expect(resp.headers.get('content-type')?.toLowerCase()).toBe('application/json; charset=utf-8')
     const data = await resp.json()
-    console.log(data)
     expect(data).toHaveProperty('model')
     expect(data).toHaveProperty('chatQuery')
     expect(data).toHaveProperty('message')
-  })
+  } );
+
+  test('Test with GET without parameters', async () => {
+    const resp = await app.request('/')
+    expect(resp.status).toBe(200)
+    expect(resp.headers.get('content-type')?.toLowerCase()).toBe('application/json; charset=utf-8')
+    const data = await resp.json()
+    expect(data).toHaveProperty('model')
+    expect(data).toHaveProperty('chatQuery')
+    expect(data).toHaveProperty
+  } );
 
   test('POST Test: Pass chatQuery and model through body of POST request', async () => {
     const input = { chatQuery: this.chatQuery, model: this.model }
@@ -34,7 +43,6 @@ describe('Test RedPill AI Agent Contract', () => {
     expect(resp.status).toBe(200)
     expect(resp.headers.get('content-type')?.toLowerCase()).toBe('application/json; charset=utf-8')
     const data = await resp.json()
-    console.log(data)
     expect(data).toHaveProperty('model')
     expect(data).toHaveProperty('chatQuery')
     expect(data).toHaveProperty('message')
