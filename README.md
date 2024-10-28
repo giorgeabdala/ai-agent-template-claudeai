@@ -235,6 +235,78 @@ const getType = (queries.type) ? queries.type[0] as string : ''
 const data = await c.req.json()
 ```
 
+## Architecture/Source Code Design Details
+
+This architecture uses the `IAssistantService` interface and `AssistantServiceFactory` to simplify integration with various AI services, keeping the system flexible and extensible.
+
+### `IAssistantService`: Standardizing AI Services
+
+The `IAssistantService` interface defines a common contract for all AI services, ensuring each service implements the `executeChatQuery` method. This approach:
+
+- **Facilitates service swapping**: Each implementation can be easily swapped or expanded.
+- **Maintains code consistency**: All services follow the same input and output format.
+
+### `AssistantServiceFactory`: Instantiation Flexibility
+
+`AssistantServiceFactory` centralizes the logic for creating services, returning instances based on the requested type (e.g., `"claude"`). This allows:
+
+- **Simplified service selection**: The client specifies a service by name, and the factory returns the correct instance.
+- **Easy expansion**: Adding a new service requires only a new `case` in the factory.
+
+This design makes the system modular, easy to maintain, and ready for integrating new AI services with minimal effort.
+
+### Adding New AI Services
+
+To integrate additional AI implementations, follow these steps:
+
+1. **Create a New Service Class**: Build a new class that implements the `IAssistantService` interface, ensuring the `executeChatQuery` method is implemented. For example, to add support for a hypothetical service named `OtherAIService`:
+
+    ```typescript
+    import IAssistantService from "../adapters/IAssistantService";
+
+    export default class OtherAIService implements IAssistantService {
+        public async executeChatQuery(chatQuery: string, model: string, max_tokens: number, temperature: number): Promise<any> {
+            // Implement the call to the OtherAI API
+            // Return an object in the format { model, chatQuery, message }
+        }
+    }
+    ```
+
+2. **Register the New Service in the Factory**: Add a new `case` to `AssistantServiceFactory` to include the new implementation:
+
+    ```typescript
+    import IAssistantService from "../adapters/IAssistantService";
+    import ClaudeAIService from "./ClaudeAIService";
+    import OtherAIService from "./OtherAIService"; // Import the new service
+
+    export default class AssistantServiceFactory {
+        public static create(serviceType: string): IAssistantService {
+            switch (serviceType.toLowerCase()) {
+                case "claude":
+                    return new ClaudeAIService();
+                case "other":
+                    return new OtherAIService(); // New service
+                default:
+                    throw new Error(`No IAssistantService implementation found for type: ${serviceType}`);
+            }
+        }
+    }
+    ```
+
+3. **Use the New Service**: To use the new service, simply specify its `serviceType` when calling `AssistantServiceFactory`:
+
+    ```typescript
+    const assistantService = AssistantServiceFactory.create("other");
+    ```
+
+### Notes
+
+- **Multiple AI Services**: `AssistantServiceFactory` enables adding multiple AI services easily, centralizing the creation logic and simplifying maintenance.
+- **`IAssistantService` Implementation**: All services must adhere to the `IAssistantService` interface, ensuring consistency in query response format.
+
+With this design, `AssistantServiceFactory` offers flexibility to expand the system and support new AI providers without modifying the core system logic.
+
+
 ### Debugging
 
 To debug your agent, you can use the following command:
