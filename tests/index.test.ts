@@ -45,7 +45,7 @@ describe('Test RedPill AI Agent Contract', () => {
     const input = { chatQuery: this.chatQuery, model: this.model }
     const resp = await app.request('/', {
       method: 'POST',
-      body: JSON.stringify(input),q
+      body: JSON.stringify(input),
     })
     expect(resp.status).toBe(200)
     expect(resp.headers.get('content-type')?.toLowerCase()).toBe('application/json; charset=utf-8')
