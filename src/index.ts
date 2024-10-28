@@ -4,7 +4,7 @@ import { handle } from '@phala/wapo-env/guest'
 import ClaudeAIService from "./services/ClaudeAIService";
 import IChatQueryService, {ChatResponse} from "./adapters/IChatQueryService";
 export const app = new Hono()
-const defaultChatQuery = 'Phala Network is the future..?';
+const defaultChatQuery = 'Complete the Sentence: Phala Network is the future..?';
 const defaultModel = 'claude-3-5-sonnet-20241022';
 const defaultMaxTokens = 20;
 const defaultTemperature = 0.7;
@@ -43,7 +43,6 @@ app.get('/', async (c) => {
     temperature: queries.temperature ? Number(queries.temperature[0]) : defaultTemperature
   };
   const response = await getChatCompletion(params);
-  console.log('Response:', response);
   return c.json(response);
 })
 
