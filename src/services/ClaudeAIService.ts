@@ -1,6 +1,6 @@
-import IChatQueryService from "../adapters/IChatQueryService";
+import IAssistantService from "../adapters/IAssistantService";
 
-export default class ClaudeAIService implements IChatQueryService {
+export default class ClaudeAIService implements IAssistantService {
 
     private apiKey: string;
 

@@ -7,7 +7,6 @@ export interface ChatResponse {
 }
 
 
-export default interface IChatQueryService {
-
+export default interface IAssistantService {
     executeChatQuery(chatQuery: string, model: string, max_tokens: number, temperature: number, systemPrompt?: string): Promise<ChatResponse> ;
 }

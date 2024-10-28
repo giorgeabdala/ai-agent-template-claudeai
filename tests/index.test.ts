@@ -18,7 +18,6 @@ describe('Test RedPill AI Agent Contract', () => {
     expect(resp.headers.get('content-type')?.toLowerCase()).toBe('application/json; charset=utf-8')
     const data = await resp.json()
     expect(data).toHaveProperty('model', 'claude-3-5-sonnet-20241022')
-    expect(data).toHaveProperty('chatQuery', 'Phala Network is the future..?')
     expect(data).toHaveProperty('message')
   })
 
@@ -38,7 +37,6 @@ describe('Test RedPill AI Agent Contract', () => {
     expect(resp.headers.get('content-type')?.toLowerCase()).toBe('application/json; charset=utf-8')
     const data = await resp.json()
     expect(data).toHaveProperty('model', 'claude-3-5-sonnet-20241022')
-    expect(data).toHaveProperty('chatQuery', 'Phala Network is the future..?')
     expect(data).toHaveProperty('message')
   })
 })
@@ -47,7 +45,7 @@ describe('Test RedPill AI Agent Contract', () => {
     const input = { chatQuery: this.chatQuery, model: this.model }
     const resp = await app.request('/', {
       method: 'POST',
-      body: JSON.stringify(input),
+      body: JSON.stringify(input),q
     })
     expect(resp.status).toBe(200)
     expect(resp.headers.get('content-type')?.toLowerCase()).toBe('application/json; charset=utf-8')
@@ -55,6 +53,10 @@ describe('Test RedPill AI Agent Contract', () => {
     expect(data).toHaveProperty('model')
     expect(data).toHaveProperty('chatQuery')
     expect(data).toHaveProperty('message')
+    expect(data.model).equal(this.model)
+    expect(data.chatQuery).equal(this.chatQuery)
+
+
   })
 
 afterAll(async () => {

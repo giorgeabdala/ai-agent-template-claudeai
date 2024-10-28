@@ -2,7 +2,8 @@ import '@phala/wapo-env'
 import { Hono } from 'hono/tiny'
 import { handle } from '@phala/wapo-env/guest'
 import ClaudeAIService from "./services/ClaudeAIService";
-import IChatQueryService, {ChatResponse} from "./adapters/IChatQueryService";
+import IAssistantService, {ChatResponse} from "./adapters/IAssistantService";
+import AssistantServiceFactory from "./adapters/AssistantServiceFactory";
 export const app = new Hono()
 const defaultChatQuery = 'Complete the Sentence: Phala Network is the future..?';
 const defaultModel = 'claude-3-5-sonnet-20241022';
@@ -24,7 +25,7 @@ async function getChatCompletion(params: ChatCompletionParams): Promise<ChatResp
     const chatQuery = (params.chatQuery) ? params.chatQuery : defaultChatQuery;
     const maxTokens = (params.maxTokens) ? Number(params.maxTokens) : defaultMaxTokens;
     const temperature = (params.temperature) ? Number(params.temperature) : defaultTemperature;
-    const claudeAIService:IChatQueryService = new ClaudeAIService();
+    const claudeAIService:IAssistantService = AssistantServiceFactory.create();
     return claudeAIService.executeChatQuery(chatQuery, model, maxTokens, temperature);
   } catch (error) {
     console.error('Chat query execution failed:', error);
