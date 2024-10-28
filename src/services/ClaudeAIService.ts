@@ -1,55 +1,47 @@
-import 'dotenv/config';
+import IChatQueryService from "../adapters/IChatQueryService";
 
-import IChatQueryService, {ChatResponse} from "../adapters/IChatQueryService";
-import Anthropic from "@anthropic-ai/sdk";
+export default class ClaudeAIService implements IChatQueryService {
 
-export default class ClaudeAIService  implements IChatQueryService{
-
-    private anthropic: Anthropic;
-    private apiKey: string = '';
+    private apiKey: string;
 
     public constructor() {
         this.apiKey = this.getApiKey();
         if (!this.apiKey) throw new Error('ANTHROPIC_API_KEY is not defined');
 
         console.log('Initializing Anthropic AI Service with API Key... ')
-        this.anthropic = new Anthropic({
-            apiKey: this.apiKey
-        });
-    }
-    public async executeChatQuery(chatQuery: string, model: string, max_tokens: number, temperature: number, systemPrompt?: string): Promise<ChatResponse> {
-        if(!model) model = "claude-3-5-sonnet-20241022";
-        if (!systemPrompt) systemPrompt = "You are a blockchain expert";
 
-        console.log(`Executing Chat Query: ${chatQuery} with model: ${model} and systemPrompt: ${systemPrompt}`);
+    }
+
+    public async executeChatQuery(chatQuery: string, model: string, max_tokens: number, temperature: number): Promise<any> {
+        if(!model) model = "claude-3-5-sonnet-20241022";
+
+        console.log('Executing Chat Query... ')
         const response = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': `${this.apiKey}`,
+                'x-api-key': this.apiKey,
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                messages: [{ role: "user", content: `${chatQuery}` }],
-                model: `${model}`,
+                messages: [{ role: "user", content: chatQuery }],
+                model: model,
                 max_tokens: max_tokens
             })
         });
-
-        const data = await response.json();
-        console.log(`Response from Chat Query: ${JSON.stringify(data)}`);
-        const message = (data.content) ? data.content[0].text as string : 'Failed to get response from Claude AI';
-        console.log('Message Response: ', message);
+        console.log('Response Chat Query:', response);
+        const msg = await response.json();
 
         return {
             model,
             chatQuery,
-            message: message
+            message: msg.content[0].text
         };
     }
 
 
     private getApiKey() : String{
+        console.log('Getting API Key from Vault... ')
         let vault: Record<string, string> = {};
         try {
             vault = JSON.parse(process.env.secret || '')
@@ -59,6 +51,7 @@ export default class ClaudeAIService  implements IChatQueryService{
         return (vault.ANTHROPIC_API_KEY) ? vault.ANTHROPIC_API_KEY as string : '';
 
     }
+
 
 
 }
