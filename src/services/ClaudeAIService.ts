@@ -1,4 +1,4 @@
-import IAssistantService from "../adapters/IAssistantService";
+import IAssistantService, {ChatResponse} from "../adapters/IAssistantService";
 
 export default class ClaudeAIService implements IAssistantService {
 
@@ -12,7 +12,7 @@ export default class ClaudeAIService implements IAssistantService {
 
     }
 
-    public async executeChatQuery(chatQuery: string, model: string, max_tokens: number, temperature: number): Promise<any> {
+    public async executeChatQuery(chatQuery: string, model: string, max_tokens: number, temperature: number, systemPrompt?: string): Promise<ChatResponse> {
         if(!model) model = "claude-3-5-sonnet-20241022";
 
         console.log('Executing Chat Query... ')
@@ -29,18 +29,16 @@ export default class ClaudeAIService implements IAssistantService {
                 max_tokens: max_tokens
             })
         });
-        console.log('Response Chat Query:', response);
-        const msg = await response.json();
 
-        return {
-            model,
-            chatQuery,
-            message: msg.content[0].text
-        };
+        if (response.status === 200) {
+        const msg:any = await response.json();
+        return {model: msg.model, chatQuery: chatQuery, message: msg.content[0].text, success: true};
+        }
+        return {message: "Error in executeChatQuery", success: false};
     }
 
 
-    private getApiKey() : String{
+    public getApiKey() : string{
         console.log('Getting API Key from Vault... ')
         let vault: Record<string, string> = {};
         try {
@@ -51,6 +49,13 @@ export default class ClaudeAIService implements IAssistantService {
         return (vault.ANTHROPIC_API_KEY) ? vault.ANTHROPIC_API_KEY as string : '';
 
     }
+
+
+
+
+
+
+
 
 
 

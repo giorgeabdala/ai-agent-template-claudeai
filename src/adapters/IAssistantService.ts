@@ -1,9 +1,10 @@
 
 
 export interface ChatResponse {
-    model: string;
-    chatQuery: string;
+    model?: string;
+    chatQuery?: string;
     message: string;
+    success: boolean;
 }
 
 

@@ -30,6 +30,8 @@ async function getChatCompletion(params: ChatCompletionParams): Promise<ChatResp
   } catch (error) {
     console.error('Chat query execution failed:', error);
     console.error('Params:', params);
+
+    return {message:"Chat query execution failed: " + error,  success: false}
     }
   }
 

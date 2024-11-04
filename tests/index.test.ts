@@ -2,16 +2,14 @@ import {afterAll, describe, test, vi, expect, beforeAll} from 'vitest'
 import { app } from '../src/'
 import * as path from "node:path";
 
-beforeAll(() => {
-  this.chatQuery = 'Who are you two?';
-  this.model = 'claude-3-5-sonnet-20241022';
-} ) ;
+const chatQuery = 'Who are you two?';
+const model = 'claude-3-5-sonnet-20241022';
 
 // Set Testing env secrets
 const secretsFile = '../secrets/default.json'
 vi.stubEnv('secret', JSON.stringify(require(path.join(__dirname, secretsFile))))
 
-describe('Test RedPill AI Agent Contract', () => {
+describe('Test ClaudeAI AI Agent Contract', () => {
   test('returns default response when no query parameters are provided', async () => {
     const resp = await app.request('/')
     expect(resp.status).toBe(200)
@@ -42,7 +40,7 @@ describe('Test RedPill AI Agent Contract', () => {
 })
 
   test('POST Test: Pass chatQuery and model through body of POST request', async () => {
-    const input = { chatQuery: this.chatQuery, model: this.model }
+    const input = { chatQuery: chatQuery, model: model }
     const resp = await app.request('/', {
       method: 'POST',
       body: JSON.stringify(input),
@@ -53,8 +51,8 @@ describe('Test RedPill AI Agent Contract', () => {
     expect(data).toHaveProperty('model')
     expect(data).toHaveProperty('chatQuery')
     expect(data).toHaveProperty('message')
-    expect(data.model).equal(this.model)
-    expect(data.chatQuery).equal(this.chatQuery)
+    expect(data.model).equal(model)
+    expect(data.chatQuery).equal(chatQuery)
 
 
   })
