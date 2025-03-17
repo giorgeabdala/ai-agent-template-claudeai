@@ -6,6 +6,7 @@
   </a>
 
   <p align="center">
+    <br><br>
     Host your AI Agent Contract on Phala's decentralized serverless cloud.
     <br />
     <a href="https://github.com/Phala-Network/ai-agent-template-claudeai"><strong>Explore the docs »</strong></a>
