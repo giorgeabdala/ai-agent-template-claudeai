@@ -1,7 +1,8 @@
 <div align="center">
   <a href="https://github.com/Phala-Network/ai-agent-template-claudeai">
     <h1>AI Agent Contract Template with Claude AI</h1>
-    <img height="320" src="./public/AI-Agent-Contract.jpg" />
+    <img height="320" src="https://github.com/user-attachments/assets/275831c8-50dd-4cf3-b07a-9414e292e0e0" />
+    
     <br />
   </a>
 
